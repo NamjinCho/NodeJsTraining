@@ -1,9 +1,9 @@
 var express = require('express')
 var app = express()
-
+var cookieparser = require('cookie-parser');
 const port = 80
 
-
+app.use(cookieparser());
 app.use(express.static('public'))
 app.get('/',function(req,res){ // rerquest 가 먼저 그리고 response
 
@@ -24,6 +24,21 @@ app.get('/topic/:id',function(req,res){
   `
   res.send(links);
 
+})
+app.get('/count',function(req,res){
+
+  //var count = req.cookies.count;
+  if(req.cookies.count)
+  {
+     var count = parseInt(req.cookies.count);
+     count = count+1;
+     res.cookie('count',count)
+  }
+  else {
+    var count = 1;
+    res.cookie('count',count);
+  }
+  res.send('count : '+count);
 })
 app.get('/queryTest/:tid',function(req,res){
 
